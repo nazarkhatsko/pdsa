@@ -1,0 +1,33 @@
+runners:
+  -
+    tag: "Good vs Random"
+    iterations: 50
+    solver: smp
+    strategies:
+      - good
+      - rand
+  -
+    tag: "Good vs Tip fot Tip"
+    iterations: 50
+    solver: smp
+    strategies:
+      - good
+      - tft
+  -
+    tag: "Random vs Tip fot Tip"
+    iterations: 50
+    solver: smp
+    strategies:
+      - rand
+      - tft
+
+viewers:
+  -
+    type: html
+    out: ./results/result.html
+  -
+    type: text
+    out: ./results/result.text
+  -
+    type: json
+    out: ./results/result.json

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prisoner's Dilemma</title>
+
+    <!-- Bootstrap -->
+    <style>{{ template "bootstrap.min.css" . }}</style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar justify-content-between mb-3">
+        <div class="container">
+            <!-- Brand -->
+            <a class="navbar-brand text-center" href="#">Prisoner's Dilemma</a>
+        
+            <div class="d-inline-flex">
+                <!-- Search Form -->
+                <div class="m-2">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="searchInput" placeholder="Search by tag" aria-label="Search by tag" aria-describedby="button-search">
+                        <button type="button" class="btn btn-outline-primary" id="searchButton">Search</button>
+                    </div>
+                </div>
+
+                <!-- Theme Selector -->
+                <div class="dropdown m-2">
+                    <button
+                        class="btn btn-outline-success dropdown-toggle"
+                        type="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                    >
+                        Themes
+                    </button>
+    
+                    <ul class="dropdown-menu">
+                        <li>
+                            <button type="button" class="dropdown-item theme-item" id="theme-light" data-theme-value="light">
+                                Light
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" class="dropdown-item theme-item" id="theme-dark" data-theme-value="dark">
+                                Dark
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" class="dropdown-item theme-item" id="theme-auto" data-theme-value="auto">
+                                Auto
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Link to the GitHub project -->
+                <div class="m-2">
+                    <a class="btn btn-info" href="https://github.com/nazarkhatsko/prisoners-dilemma" target="_blank">Open on GitHub</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Table of Games -->
+        <table class="table table-hover table-striped table-bordered mb-3">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Tag</th>
+                    <th scope="col">Iterations</th>
+                    <th scope="col">Solver</th>
+                    <th scope="col">Strategies</th>
+                    <th scope="col">Winner Strategy</th>
+                    <th scope="col">Started</th>
+                    <th scope="col">Flinished</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                {{ range $index, $game := . }}
+                <tr>
+                    <th scope="row">{{ inc $index }}</th>
+                    <td>{{ $game.Tag }}</td>
+                    <td>{{ $game.Iterations }}</td>
+                    <td>{{ $game.Solver.Abbr }} ({{ $game.Solver.Name }})</td>
+                    <td>
+                        {{ range $index, $strategy := $game.Strategies }}
+                        {{ $strategy.Abbr }}
+                        {{ end }}
+                    </td>
+                    <td>{{ $game.WinnerStrategy }}</td>
+                    <td>{{ date $game.StartedAt }}</td>
+                    <td>{{ date $game.FinishedAt }}</td>
+                    <td>
+                        <button
+                            type="button"
+                            class="btn btn-sm btn-primary"
+                            data-bs-toggle="modal"
+                            data-bs-target="#game-modal-{{ $index }}"
+                        >
+                            Details
+                        </button>
+                    </td>
+                </tr>
+                {{ end }}
+
+                <tr id="tableEmpty" style="display: none;">
+                    <td colspan="9" class="text-center">No data found</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Mention of Author -->
+    <div class="position-fixed bottom-0 start-50 translate-middle-x">
+        <p>Made with ❤️ by <a href="https://github.com/nazarkhatsko" target="_blank">@nazarkhatsko</a></p>
+    </div>
+
+    <!-- Game Model Details -->
+    {{ range $index, $game := . }}
+    <div
+        class="modal fade"
+        id="game-modal-{{ $index }}"
+        tabindex="-1"
+        aria-labelledby="game-modal-{{ $index }}-label"
+        aria-hidden="true"
+    >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="game-modal-{{ $index }}-label">{{ $game.Tag }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Game Information -->
+                    <fieldset disabled>
+                        <div class="mb-3">
+                            <label class="form-label">Index</label>
+                            <input type="text" class="form-control" value="{{ inc $index }}" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Tag</label>
+                            <input type="text" class="form-control" value="{{ $game.Tag }}" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Iterations</label>
+                            <input type="text" class="form-control" value="{{ $game.Iterations }}" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Solver</label>
+                            <input type="text" class="form-control" value="{{ $game.Solver.Abbr }} ({{ $game.Solver.Name }})" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Winner Strategy</label>
+                            <input type="text" class="form-control" value="{{ $game.WinnerStrategy }}" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Started</label>
+                            <input type="text" class="form-control" value="{{ date $game.StartedAt }}" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Finished</label>
+                            <input type="text" class="form-control" value="{{ date $game.FinishedAt }}" />
+                        </div>
+                    </fieldset>
+
+                    <hr />
+
+                    <!-- Table of Strategies -->
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <label class="card-title">Strategies</label>
+                        </div>
+                        <div class="card-body overflow-auto">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Abbr</th>
+                                        <th scope="col">Cooperates</th>
+                                        <th scope="col">Defects</th>
+                                        <th scope="col">Balance</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{ range $index, $strategy := $game.Strategies }}
+                                    <tr>
+                                        <th scope="row">{{ inc $index }}</th>
+                                        <td>{{ $strategy.Name }}</td>
+                                        <td>{{ $strategy.Abbr }}</td>
+                                        <td>{{ $strategy.Cooperates }}</td>
+                                        <td>{{ $strategy.Defects }}</td>
+                                        <td>{{ $strategy.Balance }}</td>
+                                    </tr>
+                                    {{ end }}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Table of Moves -->
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <label class="card-title">Moves</label>
+                        </div>
+                        <div class="card-body overflow-auto">
+                            <table class="table">
+                                <tbody>
+                                    {{ range $index, $strategy := $game.Strategies }}
+                                    <tr>
+                                        <th scope="row">{{ $strategy.Abbr }}</th>
+                                        {{ range $index, $move := $strategy.Moves }}
+                                        <td>
+                                            {{ if eq $move 1 }}
+                                            <button
+                                                type="button"
+                                                class="btn btn-success"
+                                                data-bs-container="body"
+                                                data-bs-toggle="popover"
+                                                data-bs-placement="top"
+                                                data-bs-content="The movement type is cooperate, and the strategy's reward at this step is {{ index $strategy.Points $index }}."
+                                            >C</button>
+                                            {{ else if eq $move 2 }}
+                                            <button
+                                                type="button"
+                                                class="btn btn-danger"
+                                                data-bs-container="body"
+                                                data-bs-toggle="popover"
+                                                data-bs-placement="top"
+                                                data-bs-content="The movement type is defect, and the strategy's reward at this step is {{ index $strategy.Points $index }}."
+                                            >D</button>
+                                            {{ end }}
+                                        </td>
+                                        {{ end }}
+                                    </tr>
+                                    {{ end }}
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th scope="row">#</th>
+                                        {{ range $index, $iteration := iterate $game.Iterations }}
+                                        <td class="text-center">{{ inc $iteration }}</td>
+                                        {{ end }}
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ end }}
+
+    <!-- JQuery -->
+    <script>{{ template "jquery.min.js" . }}</script>
+
+    <!-- Bootstrap -->
+    <script>{{ template "bootstrap.bundle.min.js" . }}</script>
+
+    <!-- Scripts -->
+    <script>{{ template "theme.js" . }}</script>
+    <script>{{ template "search.js" . }}</script>
+    <script>{{ template "popover.js" . }}</script>
+</body>
+</html>

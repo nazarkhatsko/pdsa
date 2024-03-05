@@ -1,0 +1,22 @@
+{{- range $index, $game := . -}}
+[GAME #{{ inc $index }}] ({{ $game.Tag }})
+|=> GENERAL
+  |- Iterations: {{ $game.Iterations }}
+  |- StartedAt: {{ $game.StartedAt }}
+  |- FinishedAt: {{ $game.FinishedAt }}
+
+|=> SOLVER
+  |- ID: {{ $game.Solver.ID }}
+  |- Abbr: {{ $game.Solver.Abbr }}
+  |- Name: {{ $game.Solver.Name }}
+  |- Description: {{ $game.Solver.Description }}
+
+|=> STRATEGIES
+{{- range $index, $strategy := $game.Strategies }}
+  |- ID: {{ $strategy.ID }}
+  |- Abbr: {{ $strategy.Abbr }}
+  |- Name: {{ $strategy.Name }}
+  |- Description: {{ $strategy.Description }}
+  |- Balance: {{ $strategy.Balance }}
+{{ end }}
+{{ end }}
