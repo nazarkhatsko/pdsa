@@ -33,7 +33,11 @@ func NewStateManager(ids []ID) *StateManager {
 func (sm *StateManager) SwitchTo(id ID) *State {
 	store := sm.stores[id]
 
-	oponents := utils.Accumulate(sm.ids, func(id ID, acc []StateOponent) []StateOponent {
+	IDs := utils.Filter(sm.ids, func(el ID, i int) bool {
+		return el != id
+	})
+
+	oponents := utils.Accumulate(IDs, func(id ID, acc []StateOponent) []StateOponent {
 		return append(acc, StateOponent{
 			StateContext: StateContext{
 				balance: sm.balances[id],

@@ -1,4 +1,4 @@
-# Prisoner's Dilemma Strategy Analyzer
+# PDSA - Prisoner's Dilemma Strategy Analyzer
 
 ## Overview
 
@@ -23,21 +23,27 @@ To run the program, navigate to the project directory in your terminal and execu
 go run cmd/main.go --config <PATH_TO_CONFIG_FILE>
 ```
 
+or use an environment variable:
+
+```bash
+export CONFIG_PATH=<CONFIG_PATH>
+```
+
 The configuration file should be in YAML format. Here's an example of how to structure your configuration:
 
 ```yaml
 runners:
-  - tag: "Good vs Random"
+  - tag: "Unconditional Cooperator vs Random"
     iterations: 50
     solver: smp
     strategies:
-      - good
+      - cu
       - rand
-  - tag: "Good vs Tip for Tip"
+  - tag: "Unconditional Cooperator vs Tip for Tip"
     iterations: 50
     solver: smp
     strategies:
-      - good
+      - cu
       - tft
   - tag: "Random vs Tip for Tip"
     iterations: 50
@@ -61,7 +67,7 @@ viewers:
 - `tag`: A unique identifier for the simulation.
 - `iterations`: The number of times the simulation will run.
 - `solver`: The method used for solving the game. Currently, only `smp` (simple method) is available.
-- `strategies`: The strategies to compare. Options include `good`, `rand`, and `tft` (tit for tat).
+- `strategies`: The strategies to compare. Options include `cu`, `rand`, and `tft` (tit for tat).
 
 ### Viewers
 - `type`: The format of the output report (`html`, `text`, or `json`).
@@ -73,9 +79,9 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Acknowledgments
 
-- This project was inspired by the article on the Prisoner's Dilemma from the [Stanford Encyclopedia of Philosophy](https://plato.stanford.edu/entries/prisoner-dilemma/).
+- This project was inspired by the article on the Prisoner's Dilemma from the [Stanford Encyclopedia of Philosophy 🎓](https://plato.stanford.edu/entries/prisoner-dilemma/).
 - Gratitude is also extended to [Strategies for the Iterated Prisoner's Dilemma](https://plato.stanford.edu/entries/prisoner-dilemma/strategy-table.html) for providing a comprehensive guide on various strategies that can be employed in the iterated version of the game.
 - Special thanks to the creators of the following educational videos, which offer insightful explorations of the Prisoner's Dilemma:
-  - [Video explaining the Prisoner's Dilemma in English](https://www.youtube.com/watch?v=mScpHTIi-kM).
-  - [Ukrainian translation of the above video, making the content accessible to a wider audience](https://www.youtube.com/watch?v=HnjVSCnPYCU&t=522s).
+  - [Video explaining the Prisoner's Dilemma in English 🇬🇧](https://www.youtube.com/watch?v=mScpHTIi-kM).
+  - [Ukrainian translation of the above video, making the content accessible to a wider audience 🇺🇦](https://www.youtube.com/watch?v=HnjVSCnPYCU&t=522s).
 - Thanks to all contributors and users of this project for exploring the fascinating dynamics of game theory together.

@@ -6,6 +6,6 @@ var Solvers []core.Solver
 
 func init() {
 	Solvers = []core.Solver{
-		NewSimpleSolver(),
+		NewSMPSolver(),
 	}
 }

@@ -1,6 +1,7 @@
 package game
 
 import (
+	"fmt"
 	"prisoners-dilemma/internal/core"
 	"prisoners-dilemma/internal/utils"
 )
@@ -101,13 +102,19 @@ func (r *Runner) Run() (Report, error) {
 		return Report{}, nil
 	}
 
+	winnerStrategy := "[UNCERTAINLY]"
+	index := utils.Max(balances)
+	if index != -1 {
+		winnerStrategy = fmt.Sprintf("%s (%s)", r.strategies[index].Abbr(), r.strategies[index].Name())
+	}
+
 	report := Report{
 		Tag:            r.tag,
 		Iterations:     r.iterations,
 		StartedAt:      startedAt,
 		FinishedAt:     finishedAt,
 		Solver:         ReportInfoFrom(r.solver),
-		WinnerStrategy: "[NONE]",
+		WinnerStrategy: winnerStrategy,
 		Strategies: utils.Map(r.strategies, func(s core.Strategy, i int) ReportStrategy {
 			return ReportStrategy{
 				ReportInfo: ReportInfoFrom(s),

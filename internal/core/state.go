@@ -24,9 +24,9 @@ func (s State) Self() *StateSelf {
 	return &s.self
 }
 
-// func (s State) OponentsCount() int {
-// 	return len(s.oponents)
-// }
+func (s State) OponentsCount() int {
+	return len(s.oponents)
+}
 
 func (s State) Oponents() []StateOponent {
 	return s.oponents

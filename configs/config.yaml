@@ -1,24 +1,31 @@
 runners:
   -
-    tag: "Good vs Random"
+    tag: "Unconditional Cooperator vs Random"
     iterations: 50
     solver: smp
     strategies:
-      - good
+      - cu
       - rand
-  -
-    tag: "Good vs Tip fot Tip"
-    iterations: 50
-    solver: smp
-    strategies:
-      - good
-      - tft
   -
     tag: "Random vs Tip fot Tip"
     iterations: 50
     solver: smp
     strategies:
       - rand
+      - tft
+  -
+    tag: "Unconditional Defector vs Tip fot Tip"
+    iterations: 50
+    solver: smp
+    strategies:
+      - du
+      - tft
+  -
+    tag: "Tit for Two Tats vs Tip fot Tip"
+    iterations: 50
+    solver: smp
+    strategies:
+      - tftt
       - tft
 
 viewers:

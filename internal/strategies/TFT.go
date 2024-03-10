@@ -1,6 +1,9 @@
 package strategies
 
-import "prisoners-dilemma/internal/core"
+import (
+	"errors"
+	"prisoners-dilemma/internal/core"
+)
 
 type TFTStrategy struct {
 	id core.ID
@@ -25,12 +28,16 @@ func (s TFTStrategy) Name() string {
 }
 
 func (s TFTStrategy) Description() string {
-	return "Cooperates on the first round and imitates its opponent's previous move thereafter."
+	return "Cooperates on the first round and imitates its opponent's previous move thereafter"
 }
 
 func (s *TFTStrategy) Strategy(state *core.State) (core.Move, error) {
+	if state.OponentsCount() != 1 {
+		return core.MOVE_NULL, errors.New("error: TFTStrategy() incorrect oponents count")
+	}
+
 	if state.Iteration() > 0 {
-		move, _ := state.FirstOponent().LastMove()
+		move := state.FirstOponent().Move(-1)
 		return move, nil
 	}
 	return core.MOVE_COOPERATE, nil

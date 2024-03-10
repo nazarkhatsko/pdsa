@@ -5,35 +5,35 @@ import (
 	"prisoners-dilemma/internal/core"
 )
 
-type RandStrategy struct {
+type RANDStrategy struct {
 	id core.ID
 }
 
-func NewRandStrategy() *RandStrategy {
-	return &RandStrategy{
+func NewRANDStrategy() *RANDStrategy {
+	return &RANDStrategy{
 		id: core.GenRandID(),
 	}
 }
 
-func (s RandStrategy) ID() core.ID {
+func (s RANDStrategy) ID() core.ID {
 	return s.id
 }
 
-func (s RandStrategy) Abbr() string {
-	return "Rand"
+func (s RANDStrategy) Abbr() string {
+	return "RAND"
 }
 
-func (s RandStrategy) Name() string {
+func (s RANDStrategy) Name() string {
 	return "Random"
 }
 
-func (s RandStrategy) Description() string {
-	return "Description"
+func (s RANDStrategy) Description() string {
+	return "Defects unconditionally"
 }
 
-func (s RandStrategy) Strategy(state *core.State) (core.Move, error) {
+func (s RANDStrategy) Strategy(state *core.State) (core.Move, error) {
 	if rand.Intn(100) > 50 {
-		return core.MOVE_COOPERATE, nil
+		return core.MOVE_DEFECT, nil
 	}
-	return core.MOVE_DEFECT, nil
+	return core.MOVE_COOPERATE, nil
 }
